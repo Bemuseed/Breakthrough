@@ -166,10 +166,22 @@ namespace Breakthrough
         {
             if (Sequence.GetNumberOfCards() > 0)
             {
-                if (Hand.GetCardDescriptionAt(cardChoice - 1)[0] != Sequence.GetCardDescriptionAt(Sequence.GetNumberOfCards() - 1)[0])
+                string chosenToPlay, justPlayed;
+                chosenToPlay = Hand.GetCardDescriptionAt(cardChoice - 1);
+                justPlayed = Sequence.GetCardDescriptionAt(Sequence.GetNumberOfCards() - 1);
+                if (chosenToPlay[0] != justPlayed[0])
                 {
                     Score += MoveCard(Hand, Sequence, Hand.GetCardNumberAt(cardChoice - 1));
                     GetCardFromDeck(cardChoice);
+                }
+                else
+                {
+                    Console.WriteLine("\n## You cannot play two cards of the same tool-type in a row ##");
+                    Console.WriteLine("## You tried to play [{0} {1}] after playing [{2} {3}] ##",
+                                      chosenToPlay[0],
+                                      chosenToPlay[2],
+                                      justPlayed[0],
+                                      justPlayed[2]);
                 }
             }
             else
