@@ -82,6 +82,20 @@ namespace Breakthrough
                                         PlayCardToSequence(CardChoice);
                                     break;
                                 }
+                            case "P":
+                                {
+                                    if(!CurrentLock.GetPeekUsed())
+                                    {
+                                        Console.WriteLine("\nTop three cards: ");
+                                        for(int i=0; i<3; i++)
+                                        {
+                                            Console.WriteLine(Deck.GetCardDescriptionAt(i));
+                                        }
+                                        Console.WriteLine();
+                                        CurrentLock.SetPeekUsed(true);
+                                    }
+                                    break;
+                                }
                         }
                         if (CurrentLock.GetLockSolved())
                         {
@@ -106,6 +120,7 @@ namespace Breakthrough
             }
             Deck.Shuffle();
             CurrentLock = GetRandomLock();
+            CurrentLock.SetPeekUsed(false);
         }
 
         private bool CheckIfPlayerHasLost()
@@ -368,7 +383,12 @@ namespace Breakthrough
         private string GetChoice()
         {
             Console.WriteLine();
-            Console.Write("(D)iscard inspect, (U)se card:> ");
+            Console.Write("(D)iscard inspect, (U)se card");
+            if(!CurrentLock.GetPeekUsed())
+            {
+                Console.Write(", (P)eek");
+            }
+            Console.Write(":> ");
             string Choice = Console.ReadLine().ToUpper();
             return Choice;
         }
@@ -468,6 +488,16 @@ namespace Breakthrough
     class Lock
     {
         protected List<Challenge> Challenges = new List<Challenge>();
+        protected bool PeekUsed = false;
+
+        public bool GetPeekUsed()
+        {
+            return PeekUsed;
+        }
+        public void SetPeekUsed(bool value)
+        {
+            PeekUsed = value;
+        }
 
         public virtual void AddChallenge(List<string> condition)
         {
